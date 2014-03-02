@@ -1,6 +1,8 @@
 from mrjob.job import MRJob
 from mrjob.step import MRStep
 
+NGRAM = 3
+
 class Trigram(MRJob):
 
     def mapper(self, _, line):
@@ -20,10 +22,10 @@ class Trigram(MRJob):
         # We want to include the last 2 words from the previous line
         # in our trigrams of this line, so attach them to our word list.
         # Note: this works even if len(prevWords) < 2.
-        currWords = prevWords[-2:] + currWords
-        for i in range(len(currWords) - 2):
-            trigram = " ".join(currWords[i:i+3])
-            yield (trigram, 1)
+        currWords = prevWords[-(NGRAM-1):] + currWords
+        for i in range(len(currWords) - (NGRAM-1)):
+            new_ngram = " ".join(currWords[i:i+NGRAM])
+            yield (new_ngram, 1)
 
         # Now save the currWords as the previous line's words.
         self.PrevWords = currWords
