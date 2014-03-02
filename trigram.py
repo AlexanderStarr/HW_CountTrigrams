@@ -19,15 +19,21 @@ class Trigram(MRJob):
             prevWords = []
             self.PrevWords = prevWords
 
-        # We want to include the last 2 words from the previous line
-        # in our trigrams of this line, so attach them to our word list.
-        # Note: this works even if len(prevWords) < 2.
+        # We want to include the last NGRAM-1 words from the previous line
+        # in our n-grams of this line, so attach them to our word list.
+        # Note: this works even if len(prevWords) < NGRAM-1.
         currWords = prevWords[-(NGRAM-1):] + currWords
+
+        # Now iterate through the word list, and yield a new n-gram for each
+        # 'window' of length NGRAM in the list.
         for i in range(len(currWords) - (NGRAM-1)):
             new_ngram = " ".join(currWords[i:i+NGRAM])
             yield (new_ngram, 1)
 
         # Now save the currWords as the previous line's words.
+        # Note that it is possible to accumulate words across lines
+        # if a line is < NGRAM.  This is what we want, as it will calculate
+        # n-grams across small lines, paragraphs, etc.
         self.PrevWords = currWords
 
     def reducer(self, key, values):

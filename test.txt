@@ -1,2 +1,11 @@
-This is a test file.
-Always test your code with a test file.
+This is
+a
+more
+
+rigorous test.
+
+Will paragraph
+breaks
+work?
+
+Did paragraph breaks work?
