@@ -1,3 +1,5 @@
+# Written by Alexander Starr
+
 from mrjob.job import MRJob
 from mrjob.step import MRStep
 
@@ -7,7 +9,9 @@ class Trigram(MRJob):
 
     def mapper(self, _, line):
         '''
-        This mapper expects a text file.  It will count each trigram.
+        This mapper expects a text file.  It will count each trigram in
+        the file, including punctuation and ignoring whitespace (including
+        blank lines).
         '''
         # Get the list of words from this line.
         currWords = line.split()
